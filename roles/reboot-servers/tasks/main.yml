@@ -1,0 +1,20 @@
+---
+# Reboot clients
+ 
+- name: Reboot the host
+  shell:  sleep 2 && /sbin/shutdown -r now
+  ignore_errors: true
+  async: 1
+  poll: 0
+
+- name: Verify server up after reboot
+  local_action: wait_for
+  args:
+    host: "{{ inventory_hostname }}"
+    state: started
+    delay: 5
+    timeout: 300
+    connect_timeout: 15
+    port: 22
+  delegate_to: localhost
+  become: false

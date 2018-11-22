@@ -1,0 +1,7 @@
+---
+# Perform update on clients
+ 
+- name: Perform full package update
+  yum:
+    name: '*'
+    state: latest

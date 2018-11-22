@@ -1,0 +1,7 @@
+---
+
+- name: Rollback servers to undo last transaction
+  hosts: all
+  roles:
+    - role: rollback-servers
+

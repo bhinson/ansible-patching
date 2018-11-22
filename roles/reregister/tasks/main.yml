@@ -1,0 +1,16 @@
+---
+ 
+- name: Unregister systems
+  redhat_subscription:
+    state: absent
+
+- name: Configure subscription-manager
+  template:
+    src: rhsm.conf
+    dest: /etc/rhsm/rhsm.conf
+
+- name: Register to new account
+  redhat_subscription:
+    state: present
+    activationkey: "{{ activation_key }}"
+    org_id: "{{ org_id }}"

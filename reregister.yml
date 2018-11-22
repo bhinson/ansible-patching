@@ -1,0 +1,13 @@
+# Requires 2 varialbes to be set:
+# activation_key: Activation key to use when registering
+# organization: Organization to use when registering
+#
+# Note: This can be set inside Tower template, 
+#       or (recommended) as variables for each group in the inventory
+---
+
+- name: Reregister servers
+  hosts: all
+  roles:
+    - role: reregister
+

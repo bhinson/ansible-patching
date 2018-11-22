@@ -1,0 +1,30 @@
+---
+ 
+- name: Disable RHN-based yum plugin
+  replace:
+    path: /etc/yum/pluginconf.d/rhnplugin.conf
+    regexp: 'enabled = 1'
+    replace: 'enabled = 0'
+
+- name: Install Satellite certificate
+  package:
+    name: http://{{ satellite_hostname }}/pub/katello-ca-consumer-latest.noarch.rpm
+    state: present
+
+- name: Register to Satellite
+  redhat_subscription:
+    state: present
+    activationkey: "{{ activation_key }}"
+    org_id: "{{ organization }}"
+
+- name: Install client agent
+  yum:
+    name: katello-agent
+    state: present
+    disablerepo: "*epel*"
+
+- name: Start client agent
+  service:
+    name: goferd
+    state: started
+    enabled: yes
