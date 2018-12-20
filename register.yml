@@ -1,4 +1,4 @@
-# Requires 3 varialbes to be set:
+# Requires 3 variables to be set:
 # satellite_hostname: Hostname of Satellite server
 # activation_key: Activation key to use when registering
 # organization: Organization to use when registering
