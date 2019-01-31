@@ -6,6 +6,17 @@
     regexp: 'enabled = 1'
     replace: 'enabled = 0'
 
+- name: Disable RHN-based client service
+  service:
+    name: osad
+    state: stopped
+    enabled: no
+
+- name: Unregister from RHN
+  file:
+    path: /etc/sysconfig/rhn/systemid
+    state: absent
+
 - name: Install Satellite certificate
   package:
     name: http://{{ satellite_hostname }}/pub/katello-ca-consumer-latest.noarch.rpm
@@ -16,6 +27,7 @@
     state: present
     activationkey: "{{ activation_key }}"
     org_id: "{{ organization }}"
+    force_register: yes
 
 - name: Install client agent
   yum:
