@@ -41,8 +41,8 @@
     state: present
     disablerepo: "*epel*"
 
-- name: Start client agent
+- name: Start/restart client agent
   service:
     name: goferd
-    state: started
+    state: restarted
     enabled: yes
