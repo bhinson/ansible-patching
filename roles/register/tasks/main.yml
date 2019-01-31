@@ -18,6 +18,11 @@
     path: /etc/sysconfig/rhn/systemid
     state: absent
 
+- name: Uninstall Satellite certificate
+  package:
+    name: katello-ca-consumer-*
+    state: absent
+
 - name: Install Satellite certificate
   package:
     name: http://{{ satellite_hostname }}/pub/katello-ca-consumer-latest.noarch.rpm
