@@ -6,6 +6,11 @@
     yum:
       name: '*'
       state: latest
+      # Uncomment this line to simulate failure
+      # by disabling all repositories, so yum
+      # returns an error.
+      #
+      # disablerepo: "*"
     register: yum_output
 
   # This section is run when an error
