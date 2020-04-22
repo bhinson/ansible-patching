@@ -1,0 +1,7 @@
+---
+
+- name: Patch servers
+  hosts: all
+  roles:
+    - role: patch-servers-with-notify
+

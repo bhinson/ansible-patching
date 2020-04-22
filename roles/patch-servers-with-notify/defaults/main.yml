@@ -1,0 +1,9 @@
+# Default variables.  Uncomment the lines below,
+# or alteratively define in Tower job template.
+#
+# email_server: smtp.gmail.com
+# email_server_port: 587
+# email_username: username@gmail.com
+# email_password: myemailpassword
+# email_recipient_list: ["recipient1@gmail.com", "recipient2@gmail.com"]
+# email_sender: admin@example.com
