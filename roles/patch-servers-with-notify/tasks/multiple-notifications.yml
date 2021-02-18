@@ -16,6 +16,7 @@
   # This section is run when an error
   # was encountered. Send notification
   # email with the error output.
+  # Note: This sends one failure email per host.
   rescue:
   - name: Send email on failure
     mail:

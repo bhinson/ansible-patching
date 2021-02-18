@@ -2,6 +2,50 @@
 
 - name: Patch servers
   hosts: all
-  roles:
-    - role: patch-servers-with-notify
 
+  tasks:
+    # Delete temporary file if it exists
+    - name: Clear existing temporary file
+      file:
+        path: /tmp/yum-output
+        state: absent
+      delegate_to: localhost
+      run_once: yes
+
+    # Call patching role to update packages
+    - name: Execute patching role
+      include_role:
+        name: patch-servers-with-notify
+        public: yes
+
+    # Check if any errors were collected
+    # in temporary file
+    - name: Check for errors during patching
+      stat:
+        path: /tmp/yum-output
+      register: stat_result
+      delegate_to: localhost
+
+    # Send a single email from errors collected in file
+    - name: Send email notification
+      mail:
+        host: "{{ email_server }}"
+        port: "{{ email_server_port }}"
+        username: "{{ email_username }}"
+        password: "{{ email_password }}"
+        to: "{{ email_recipient_list }}"
+        from: "{{ email_sender }}"
+        subject: "Ansible patching failure"
+        body: "{{ lookup('file', '/tmp/yum-output') }}"
+      delegate_to: localhost
+      # Only run when temporary file exists
+      when: stat_result.stat.exists
+      # Only send one email per playbook execution
+      run_once: yes
+
+    - name: Remove temporary file
+      file:
+        path: /tmp/yum-output
+        state: absent
+      delegate_to: localhost
+      run_once: yes
