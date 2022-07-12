@@ -1,0 +1,15 @@
+---
+- name: Notify if reboot is required
+  block: 
+  - name: Check if reboot is required
+    shell: "needs-restarting -r"
+    register: restart_output
+
+  # This section is run when an error
+  # was encountered. Capture the notification
+  # message into a temporary file in order to
+  # send a single email afterwards.
+  rescue:
+  - name: Capture failure message
+    shell: echo -e "System {{ inventory_hostname }} has been updated, and now requires a restart.  Please reboot your laptop at the earliest convenience.  You will continue to receive this notification until the laptop has been restarted.\n\nAdditional Details:\n\n{{ restart_output.stdout_lines }}\n==========" >> /tmp/reboot-notify-output
+    delegate_to: localhost

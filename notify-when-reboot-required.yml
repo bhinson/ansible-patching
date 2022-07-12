@@ -1,0 +1,51 @@
+---
+
+- name: Notify when reboot is required
+  hosts: all
+
+  tasks:
+    # Delete temporary file if it exists
+    - name: Clear existing temporary file
+      file:
+        path: /tmp/reboot-notify-output
+        state: absent
+      delegate_to: localhost
+      run_once: yes
+
+    # Call role to send notification
+    - name: Execute role
+      include_role:
+        name: notify-when-reboot-required
+        public: yes
+
+    # Check if any errors were collected
+    # in temporary file
+    - name: Check for reboot required after patching
+      stat:
+        path: /tmp/reboot-notify-output
+      register: stat_result
+      delegate_to: localhost
+
+    # Send a single email from errors collected in file
+    - name: Send email notification
+      mail:
+        host: "{{ email_server }}"
+        port: "{{ email_server_port }}"
+        username: "{{ email_username }}"
+        password: "{{ email_password }}"
+        to: "{{ email_recipient_list }}"
+        from: "{{ email_sender }}"
+        subject: "Please reboot your laptop"
+        body: "{{ lookup('file', '/tmp/reboot-notify-output') }}"
+      delegate_to: localhost
+      # Only run when temporary file exists
+      when: stat_result.stat.exists
+      # Only send one email per playbook execution
+      run_once: yes
+
+    - name: Remove temporary file
+      file:
+        path: /tmp/reboot-notify-output
+        state: absent
+      delegate_to: localhost
+      run_once: yes
