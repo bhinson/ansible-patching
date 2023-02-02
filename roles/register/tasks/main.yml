@@ -7,6 +7,7 @@
 - name: Install Satellite certificate
   ansible.builtin.yum:
     name: http://{{ satellite_hostname }}/pub/katello-ca-consumer-latest.noarch.rpm
+    disable_gpg_check: true
     state: present
 
 - name: Register to Satellite
