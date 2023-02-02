@@ -1,48 +1,17 @@
 ---
- 
-- name: Disable RHN-based yum plugin
-  replace:
-    path: /etc/yum/pluginconf.d/rhnplugin.conf
-    regexp: 'enabled = 1'
-    replace: 'enabled = 0'
-
-- name: Disable RHN-based client service
-  service:
-    name: osad
-    state: stopped
-    enabled: no
-  ignore_errors: yes
-
-- name: Unregister from RHN
-  file:
-    path: /etc/sysconfig/rhn/systemid
-    state: absent
-
 - name: Uninstall Satellite certificate
-  package:
+  ansible.builtin.package:
     name: katello-ca-consumer-*
     state: absent
 
 - name: Install Satellite certificate
-  package:
+  ansible.builtin.package:
     name: http://{{ satellite_hostname }}/pub/katello-ca-consumer-latest.noarch.rpm
     state: present
 
 - name: Register to Satellite
-  redhat_subscription:
+  community.general.redhat_subscription:
     state: present
     activationkey: "{{ activation_key }}"
     org_id: "{{ organization }}"
     force_register: yes
-
-- name: Install client agent
-  yum:
-    name: katello-agent
-    state: present
-    disablerepo: "*epel*"
-
-- name: Start/restart client agent
-  service:
-    name: goferd
-    state: restarted
-    enabled: yes
