@@ -1,11 +1,11 @@
 ---
 - name: Uninstall Satellite certificate
-  ansible.builtin.package:
+  ansible.builtin.yum:
     name: katello-ca-consumer-*
     state: absent
 
 - name: Install Satellite certificate
-  ansible.builtin.package:
+  ansible.builtin.yum:
     name: http://{{ satellite_hostname }}/pub/katello-ca-consumer-latest.noarch.rpm
     state: present
 
