@@ -2,6 +2,6 @@
 # Perform update on clients
  
 - name: Perform full package update
-  yum:
+  ansible.builtin.dnf:
     name: '*'
     state: latest
