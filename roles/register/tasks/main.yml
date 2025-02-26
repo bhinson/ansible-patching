@@ -1,18 +1,24 @@
 ---
-- name: Uninstall Satellite certificate
-  ansible.builtin.yum:
-    name: katello-ca-consumer-*
-    state: absent
+- name: Generate registration command
+  redhat.satellite.registration_command:
+    server_url: "{{ host }}"
+    username: "{{ username }}"
+    password: "{{ password }}"
+    activation_keys: "{{ activation_keys }}"
+    location: "{{ location }}"
+    organization: "{{ organization }}"
+    operatingsystem: "{{ operating_system }}"
+    update_packages: "{{ update_packages }}"
+    insecure: true
+    validate_certs: false
+    jwt_expiration: 1
+  register: command
 
-- name: Install Satellite certificate
-  ansible.builtin.yum:
-    name: http://{{ satellite_hostname }}/pub/katello-ca-consumer-latest.noarch.rpm
-    disable_gpg_check: true
-    state: present
+- name: Show registration command
+  debug:
+    verbosity: 1
+    var: command
 
-- name: Register to Satellite
-  community.general.redhat_subscription:
-    state: present
-    activationkey: "{{ activation_key }}"
-    org_id: "{{ organization }}"
-    force_register: yes
+- name: Perform registration
+  ansible.builtin.shell:
+    cmd: "{{ command.registration_command }}"
