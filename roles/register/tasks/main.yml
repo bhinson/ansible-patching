@@ -1,9 +1,9 @@
 ---
 - name: Generate registration command
   redhat.satellite.registration_command:
-    server_url: "{{ host }}"
-    username: "{{ username }}"
-    password: "{{ password }}"
+    server_url: "{{ satellite_host }}"
+    username: "{{ satellite_username }}"
+    password: "{{ satellite_password }}"
     activation_keys: "{{ activation_keys }}"
     location: "{{ location }}"
     organization: "{{ organization }}"
