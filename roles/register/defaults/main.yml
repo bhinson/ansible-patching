@@ -1,0 +1,10 @@
+---
+# activation_keys:
+#   - "default activation key name"
+# location: "default_location"
+# organization: "default_organization"
+# operating_system: "RHEL x.x"
+# update_packages: false
+# insecure: false
+# validate_certs: true
+# jwt_expiration: 1
