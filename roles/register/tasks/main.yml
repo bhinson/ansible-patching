@@ -21,4 +21,4 @@
   ignore_errors: true
   failed_when:
     - command_result.rc >= 1
-    - '"This system is already registered" not in command.stderr'
+    - '"This system is already registered" not in command_result.stderr'
