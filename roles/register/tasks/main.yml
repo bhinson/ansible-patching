@@ -1,5 +1,5 @@
 ---
-- name: Generate registration command
+- name: Generate Satellite registration token
   redhat.satellite.registration_command:
     server_url: "{{ satellite_host }}"
     username: "{{ satellite_username }}"
@@ -14,11 +14,9 @@
     jwt_expiration: 1
   register: command
 
-- name: Show registration command
-  debug:
-    verbosity: 1
-    var: command
-
-- name: Perform registration
+- name: Register client to Satellite
   ansible.builtin.shell:
     cmd: "{{ command.registration_command }}"
+  failed_when:
+    - command.rc > 0
+    - '"This system is already registered" not in command.stderr'
