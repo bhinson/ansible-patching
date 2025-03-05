@@ -9,7 +9,7 @@
     organization: "{{ organization }}"
     operatingsystem: "{{ operating_system }}"
     update_packages: "{{ update_packages }}"
-    force: "{{ force_registration }}"
+    force: "{{ force_register }}"
     insecure: true
     validate_certs: false
     jwt_expiration: 1
