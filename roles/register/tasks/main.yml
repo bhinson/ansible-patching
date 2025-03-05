@@ -17,7 +17,8 @@
 - name: Register client to Satellite
   ansible.builtin.shell:
     cmd: "{{ command.registration_command }}"
+  register: command_result
   ignore_errors: true
   failed_when:
-    - command.rc >= 1
+    - command_result.rc >= 1
     - '"This system is already registered" not in command.stderr'
