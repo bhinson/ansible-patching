@@ -22,3 +22,4 @@
   failed_when:
     - command_result.rc >= 1
     - '"This system is already registered" not in command_result.stderr'
+  changed_when: command_result.rc == 0
